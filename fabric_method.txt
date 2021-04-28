@@ -1,0 +1,106 @@
+using System;
+
+
+abstract class Creator
+{
+    public string name;
+    public abstract IProduct FactoryMethod();
+    public string SomeOperation()
+    {
+        var product = FactoryMethod();
+        var result = "Just attended a lecture of "
+            + product.Operation();
+
+        return result;
+    }
+}
+
+class ConcreteCourseMaker1 : Creator
+{
+    public int price;
+    public string teacher;
+    public string theme;
+    public ConcreteCourseMaker1(int price=240,string theme="English",string teacher="Martha")
+    {
+     this.price=price; 
+     this.teacher=teacher;
+     this.theme=theme;
+    }
+    public override IProduct FactoryMethod()
+    {
+        return new Online_Course(price,theme,teacher);
+    }
+}
+
+class ConcreteCourseMaker2 : Creator
+{
+    public int price;
+    public string teacher;
+    public string theme;
+    public ConcreteCourseMaker2(int price=170,string theme="German",string teacher="Elza")
+    {
+     this.price=price;   
+     this.teacher=teacher;
+     this.theme=theme;
+    }
+    
+    public override IProduct FactoryMethod()
+    {
+        return new Practic_Course(price,theme,teacher);
+    }
+}
+public interface IProduct
+{
+    string Operation();
+}
+class Online_Course : IProduct
+{
+    public int price;
+    public string theme;
+    public string teacher;
+    public Online_Course(int price,string theme="English",string teacher="Wolfman")
+    {
+        this.price=price;
+        this.theme=theme;
+        this.teacher=teacher;
+    }
+    public string Operation()
+    {
+        return theme+" online course that has "+teacher+" as a teacher and cost`s only "+price;
+    }
+}
+
+class Practic_Course : IProduct
+{
+    public int price;
+    public string theme;
+    public string teacher;
+    public Practic_Course(int price,string theme="German",string teacher="Fritz")
+    {
+        this.price=price;
+        this.theme=theme;
+        this.teacher=teacher;
+    }
+    
+    public string Operation()
+    {
+        return theme+" practical course that has "+teacher+" as a teacher and cost`s only "+price;
+    }
+}
+
+
+    class Program
+    {
+        static void Main()
+        {
+        Console.Clear();
+        Console.WriteLine("First Course - English");
+        Console.WriteLine(new ConcreteCourseMaker1(150,"Spanish","Bob").SomeOperation());
+            
+        Console.WriteLine("");
+
+        Console.WriteLine("Second Course - German");
+        Console.WriteLine(new ConcreteCourseMaker2(200,"Japanese","Hajime").SomeOperation());
+         
+        }
+    }

@@ -1,0 +1,126 @@
+using System;
+using System.Collections.Generic;
+
+
+public interface Builder
+{
+    void AddTeacher();
+    
+    void AddAspirant();
+    
+    void AddMaterial();
+    
+    void AddBooks();
+}
+public class CourseBuilder : Builder
+{
+    private Course course = new Course();
+
+    public CourseBuilder()
+    {
+        this.Reset();
+    }
+    
+    public void Reset()
+    {
+        this.course = new Course();
+    }
+
+    public void AddTeacher()
+    {
+        this.course.Add("Teacher",240);
+    }
+    
+    public void AddMaterial()
+    {
+        this.course.Add("Material",150);
+    }
+    
+    public void AddAspirant()
+    {
+        this.course.Add("Aspirant",170);
+    }
+    
+    public void AddBooks()
+    {
+        this.course.Add("Free Books",40);
+    }
+    
+    public Course GetProduct()
+    {
+        Course result = this.course;
+
+        this.Reset();
+
+        return result;
+    }
+}
+public class Course
+{
+    public int price=0;
+    private List<object> details = new List<object>();
+    
+    public void Add(string part,int money = 120)
+    {
+        this.details.Add(part);
+        this.price+=money;
+    }
+    
+    public string ListParts()
+    {
+        string str = "";
+        int n=this.details.Count;
+        for (int i = 0; i < this.details.Count; i++)
+        {
+            str += this.details[i];
+            if (i!=n-1)
+                str +=" , ";
+            else 
+                str += " ;";
+        }
+
+        return "Consits of : " + str + '\n'+ "price : "+price+'\n';
+    }
+}
+public class Director
+{
+    public Builder build;
+
+    public void SimpleCourse()
+    {
+        this.build.AddTeacher();
+        this.build.AddMaterial();
+    }
+    
+    public void HighLevelCourse()
+    {
+        this.build.AddTeacher();
+        this.build.AddMaterial();
+        this.build.AddAspirant();
+        this.build.AddBooks();
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        var builder = new CourseBuilder();
+        var director = new Director();
+        director.build = builder;
+        
+        Console.WriteLine("Simple Course");
+        director.SimpleCourse();
+        Console.WriteLine(builder.GetProduct().ListParts());
+
+        Console.WriteLine("High level Course");
+        director.HighLevelCourse();
+        Console.WriteLine(builder.GetProduct().ListParts());
+
+
+        Console.WriteLine("Constructed Course");
+        builder.AddTeacher();
+        builder.AddBooks();
+        Console.Write(builder.GetProduct().ListParts());
+    }
+}

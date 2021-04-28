@@ -1,0 +1,90 @@
+using System;
+
+public abstract class Component
+{
+    public abstract string Operation();
+}
+class ConcreteComponent : Component
+{
+    public override string Operation()
+    {
+        return "a course";
+    }
+}
+abstract class Decorator : Component
+{
+    protected Component comp;
+
+    public Decorator(Component component)
+    {
+        this.comp = component;
+    }
+
+    public void SetComponent(Component component)
+    {
+        this.comp = component;
+    }
+    public override string Operation()
+    {
+        if (this.comp != null)
+        {
+            return this.comp.Operation();
+        }
+        else
+        {
+            return string.Empty;
+        }
+    }
+}
+class Decorator_1 : Decorator
+{
+    public Decorator_1(Component comp) : base(comp)
+    {
+    }
+    public override string Operation()
+    {
+        return $"{base.Operation()} with my best friend";
+    }
+}
+class Decorator_2 : Decorator
+{
+    public Decorator_2(Component comp) : base(comp)
+    {
+    }
+
+    public override string Operation()
+    {
+        return $"{base.Operation()} with a good teacher";
+    }
+}
+
+public class Student
+{
+    public void Decorate(Component component)
+    {
+        Console.WriteLine(component.Operation());
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Student student = new Student();
+
+        var basic = new ConcreteComponent();
+        Console.WriteLine("I attend ");
+        student.Decorate(basic);
+        Console.WriteLine();
+
+        Decorator_2 decorator_1 = new Decorator_2(basic);
+        Console.WriteLine("I attend ");
+        student.Decorate(decorator_1);
+        
+        Console.WriteLine();
+        
+        Decorator_1 decorator_2 = new Decorator_1(basic);
+        Console.WriteLine("I attend ");
+        student.Decorate(decorator_2);
+    }
+}

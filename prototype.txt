@@ -1,0 +1,73 @@
+using System;
+class Program
+{
+    static void Main()
+    {
+        Course figure = new Online_Course("url","zoom");
+        Course cloned = figure.Clone();
+        Console.WriteLine("real course");
+        figure.GetInfo();
+        Console.WriteLine("cloned course");
+        cloned.GetInfo();
+
+        Console.WriteLine();
+        
+        figure = new Offline_Course("Lviv Politechnic");
+        cloned=figure.Clone();
+        Console.WriteLine("real course");
+        figure.GetInfo();
+        Console.WriteLine("cloned course");
+        cloned.GetInfo();
+
+    }
+}
+
+interface Course
+{
+    Course Clone();
+    void GetInfo();
+}
+
+class Online_Course: Course
+{
+    private string url;
+    private string program;
+    public Online_Course(string url, string program)
+    {
+        this.url = url;
+        this.program = program;
+    }
+
+    public Course Clone()
+    {
+        return new Online_Course(this.url, this.program);
+    }
+    public void GetInfo()
+    {
+        Console.WriteLine("online course at {0} in program {1}", url, program);
+    }
+}
+
+class Offline_Course : Course
+{
+    private string place;
+    public Offline_Course(string place)
+    {
+        this.place = place;
+    }
+
+    public Course Clone()
+    {
+        return new Offline_Course(this.place);
+    }
+    public void GetInfo()
+    {
+        Console.WriteLine("offline course in  {0}", place);
+    }
+}
+
+
+
+
+
+

@@ -1,0 +1,75 @@
+using System;
+using System.Collections.Generic;
+class Program
+{
+    static void Main()
+    {
+        Course course = new Course();
+        course.ShowData();
+        course.history = new History();
+             
+        course.history.hist.Push(course.SaveState()); 
+ 
+        course.ChangeData(); 
+        
+        course.ShowData();
+        Console.WriteLine("Want to restore course ? y/n");
+        string ans = Console.ReadLine();
+        if(ans=="y")
+            course.RestoreState(course.history.hist.Pop());
+        course.ShowData();
+    }
+}
+ 
+
+class Course
+{
+    public int price=230;
+    public string name="English";
+    public History history;
+    
+    public void ShowData()
+    {
+    Console.WriteLine("This course : price: {0} , name: {1} ", this.price, this.name);    
+    }
+    public void ChangeData()
+    {
+        Console.WriteLine("Enter new price and name of the course");
+        int new_price=Convert.ToInt32(Console.ReadLine());
+        string new_name=Console.ReadLine();
+        this.price=new_price;
+        this.name=new_name;
+    }
+    public Memento SaveState()
+    {
+        Console.WriteLine("Save course \n price: {0} , name: {1} ", this.price, this.name);
+        return new Memento(price, name);
+    }
+    public void RestoreState(Memento memento)
+    {
+        this.price=memento.price;
+        this.name = memento.name;
+        Console.WriteLine("Rollback course \n price: {0} , name: {1} ", this.price, this.name);
+    }
+}
+
+class Memento
+{
+    public int price; 
+    public string name; 
+ 
+    public Memento(int price, string name)
+    {
+        this.price = price;
+        this.name = name;
+    }
+} 
+   
+class History
+{
+    public Stack<Memento> hist;
+    public History()
+    {
+        hist = new Stack<Memento>();
+    }
+}
